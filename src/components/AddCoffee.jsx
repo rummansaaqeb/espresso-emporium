@@ -1,3 +1,4 @@
+import Swal from 'sweetalert2';
 
 const AddCoffee = () => {
 
@@ -16,7 +17,28 @@ const AddCoffee = () => {
         const newCoffee = {
             name, quantity, supplier, taste, category, details, photo
         }
-        console.log(newCoffee)
+        console.log(newCoffee);
+
+        // send data to the server
+        fetch('http://localhost:5000/coffee', {
+            method: "POST",
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(newCoffee)
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
+                if (data.insertedId) {
+                    Swal.fire({
+                        title: 'Success!',
+                        text: 'Coffee Added Successfully',
+                        icon: 'success',
+                        confirmButtonText: 'Ok'
+                    })
+                }
+            })
     }
 
     return (
